@@ -1,0 +1,7 @@
+C:\Users\gemba\Desktop\Bancud_Exercise02\Exercose02_B\bin\Debug\Exercose02_B.exe.config
+C:\Users\gemba\Desktop\Bancud_Exercise02\Exercose02_B\bin\Debug\Exercose02_B.exe
+C:\Users\gemba\Desktop\Bancud_Exercise02\Exercose02_B\bin\Debug\Exercose02_B.pdb
+C:\Users\gemba\Desktop\Bancud_Exercise02\Exercose02_B\obj\Debug\Exercise02_B.csprojResolveAssemblyReference.cache
+C:\Users\gemba\Desktop\Bancud_Exercise02\Exercose02_B\obj\Debug\Exercise02_B.csproj.CoreCompileInputs.cache
+C:\Users\gemba\Desktop\Bancud_Exercise02\Exercose02_B\obj\Debug\Exercose02_B.exe
+C:\Users\gemba\Desktop\Bancud_Exercise02\Exercose02_B\obj\Debug\Exercose02_B.pdb
