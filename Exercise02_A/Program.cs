@@ -11,7 +11,6 @@ namespace Exercise02_A
         static void Main(string[] args)
         {
             View view= new View();
-      
         }
     }
 }

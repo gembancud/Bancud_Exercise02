@@ -32,5 +32,10 @@
             _courseGrade = courseGrade;
             _courseName = courseName;
         }
+
+        public Course()
+        {
+            
+        }
     }
 }

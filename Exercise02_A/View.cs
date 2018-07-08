@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Exercise02_A
@@ -12,11 +14,97 @@ namespace Exercise02_A
         private bool _exitFlag = false;
         public View()
         {
+            openSavedRecord();
             while (!_exitFlag)
             {
                 choice = Query();
                 doDecision(choice);
             }
+        }
+
+        public void openSavedRecord()
+        {
+            var filePath = @"D:\saved.text";
+            int flag = 0;
+            IEnumerable<string> SavedFile = null;
+            try
+            {
+                SavedFile=File.ReadLines(filePath);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("No File was Loaded!\n\n");
+            }
+            if (SavedFile==null) return;
+            foreach (var line in SavedFile)
+            {
+                var newStudent = new Student();
+                var newCourse= new Course();
+                foreach (var variable in GetWordsEnumerable(line))
+                {
+                    switch (flag)
+                    {
+                        case 0:
+                            newStudent.StudentName = (string)variable;
+                            flag++;
+                            break;
+                        case 1:
+                            newCourse.CourseName = (string) variable;
+                            flag++;
+                            break;
+                        case 2:
+                            newCourse.Units = Convert.ToInt32(variable);
+                            flag++;
+                            break;
+                        case 3:
+                            newCourse.CourseGrade = Convert.ToInt32(variable);
+                            newStudent.CourseList.AddToTail(newCourse);
+                            flag = 1;
+                            break;
+                    }
+                }
+                StudentList.AddToTail(newStudent);
+                flag = 0;
+            }
+            Console.WriteLine("Save File Successfully Loaded");
+        }
+
+        public IEnumerable GetWordsEnumerable(string line)
+        {
+            string word = null;
+            foreach (char letter in line)
+            {
+                if (letter != ',')
+                {
+                    word += letter;
+                }
+                else
+                {
+                    yield return word;
+                    word = null;
+                }
+                
+            }
+        }
+
+        public void SaveRecord()
+        {
+            var filePath = @"D:\saved.text";
+            LinkedList<string> SavedList= new LinkedList<string>();
+            string save = null;
+            foreach (Student student in StudentList)
+            {
+                save += student.StudentName+",";
+                foreach (Course course in student.CourseList)
+                {
+                    save += course.CourseName + ",";
+                    save += course.Units + ",";
+                    save += course.CourseGrade + ",";
+                }
+                SavedList.AddToTail(save);
+                save = null;
+            }
+            File.WriteAllLines(filePath,SavedList);
         }
 
         public int Query()
@@ -43,6 +131,13 @@ namespace Exercise02_A
                     break;
                 case 5:
                     PrintStudentRecords();
+                    break;
+                case 6:
+                    SaveRecord();
+                    _exitFlag = true;
+                    break;
+                default:
+                    Console.WriteLine("Please enter proper choice!\n");
                     break;
             }
         }
@@ -72,7 +167,7 @@ namespace Exercise02_A
             Console.WriteLine("Student Deleted");
         }
 
-        public int SearchStudentIndex(string inputName)
+        private int SearchStudentIndex(string inputName)
         {
             var temp = StudentList.Head;
             for (int i = 0; i < StudentList.Size; i++)
@@ -84,7 +179,7 @@ namespace Exercise02_A
             return -1;
         }
 
-        public ref Student SearchStudent(string inputName)
+        private ref Student SearchStudent(string inputName)
         {
             var temp = StudentList.Head;
             for (int i = 0; i < StudentList.Size; i++)
@@ -134,7 +229,7 @@ namespace Exercise02_A
             student.CourseList.AddToTail(newCourse);
         }
 
-        public void DeleteCourse(string inputCourseName)
+        private void DeleteCourse(string inputCourseName)
         {
             var temp = refStudent.CourseList.Head;
             for (int i = 0; i < StudentList.Size; i++)
@@ -195,7 +290,6 @@ namespace Exercise02_A
                 temp = temp.Next;
             }
             Console.WriteLine($"GPA:{student.GPA}");
-
         }
     }
 }

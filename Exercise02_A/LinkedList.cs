@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Exercise02_A
 {
-    public class LinkedList<T>
+    public class LinkedList<T>: IEnumerable<T>
     {
         public Node<T> _header { get; set; }
         public Node<T> _trailer { get; set; }
@@ -64,8 +65,45 @@ namespace Exercise02_A
             Size--;
             return temp;
         }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool MoveNext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Reset()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            var temp = Head;
+            for (int i = 0; i < Size; i++)
+            {
+                yield return temp.Data;
+                temp = temp.Next;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        { 
+            return GetEnumerator();
+        }
+
+
+
+
+
+
         #endregion
 
-        
+
     }
 }

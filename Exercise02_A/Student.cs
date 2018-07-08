@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,11 @@ namespace Exercise02_A
             StudentName = studentName;
             _courseList = new LinkedList<Course>();;
         }
+
+        public Student()
+        {
+            _courseList=new LinkedList<Course>();
+        }
         
         public float GPA
         {
@@ -36,6 +42,7 @@ namespace Exercise02_A
             {
                 float getGPA = 0;
                 var temp = CourseList.Head;
+                if (temp == null) return 0;
                 while (temp.Data != null)
                 {
                     getGPA += temp.Data.CourseGrade*temp.Data.Units;
@@ -62,5 +69,8 @@ namespace Exercise02_A
                 return total;
             }
         }
+
     }
+
+   
 }
