@@ -22,5 +22,16 @@
         {
             return coef + "x^" + exponent;
         }
+
+        public Term(int _coef, int _exponent)
+        {
+            coef = _coef;
+            exponent = _exponent;
+        }
+
+        public Term()
+        {
+            
+        }
     }
 }

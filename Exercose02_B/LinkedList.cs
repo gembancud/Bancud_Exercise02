@@ -40,6 +40,12 @@ namespace Exercose02_B
         }
         #endregion
 
+        public void Remove(Node<T> prevNode, Node<T> nextNode)
+        {
+            prevNode.Next = nextNode;
+            nextNode.Prev = prevNode;
+        }
+
         public IEnumerator<T> GetEnumerator()
         {
             var temp = Head;

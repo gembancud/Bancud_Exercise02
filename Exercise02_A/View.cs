@@ -24,7 +24,7 @@ namespace Exercise02_A
 
         public void openSavedRecord()
         {
-            var filePath = @"D:\saved.text";
+            var filePath = @"C:\saved.text";
             int flag = 0;
             IEnumerable<string> SavedFile = null;
             try
@@ -89,7 +89,7 @@ namespace Exercise02_A
 
         public void SaveRecord()
         {
-            var filePath = @"D:\saved.text";
+            var filePath = @"C:\saved.text";
             LinkedList<string> SavedList= new LinkedList<string>();
             string save = null;
             foreach (Student student in StudentList)
@@ -104,7 +104,16 @@ namespace Exercise02_A
                 SavedList.AddToTail(save);
                 save = null;
             }
-            File.WriteAllLines(filePath,SavedList);
+
+            try
+            {
+                File.WriteAllLines(filePath, SavedList);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Drive not Accessible, File Not Saved");
+                Console.ReadLine();
+            }
         }
 
         public int Query()
