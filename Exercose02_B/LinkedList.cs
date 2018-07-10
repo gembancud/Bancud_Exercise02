@@ -36,6 +36,9 @@ namespace Exercose02_B
 
             Head = _header.Next;
             Tail = _trailer.Prev;
+
+            Head.Prev = _header;
+            Tail.Next = _trailer;
             Size++;
         }
         #endregion
@@ -44,6 +47,8 @@ namespace Exercose02_B
         {
             prevNode.Next = nextNode;
             nextNode.Prev = prevNode;
+
+            Size--;
         }
 
         public IEnumerator<T> GetEnumerator()

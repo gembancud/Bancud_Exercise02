@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Runtime.Remoting.Messaging;
 
 namespace Exercose02_B
 {
@@ -18,7 +19,6 @@ namespace Exercose02_B
             polyLinkedList = new LinkedList<Term>();
         }
 
-
         public void ReadPolynomial(string input)
         {
             foreach (string term in GetTerms(input))
@@ -28,11 +28,14 @@ namespace Exercose02_B
                     PolyLinkedList.AddToTail(SegregatableString);
                 }
             }
+            this.CombineTerms();
+            this.OrderDecreasing();
 
         }
 
         private IEnumerable DissectTerm(string Term)
         {
+            if (Term == null) yield break;
             var newTerm = new Term();
             string tempString = null;
             int flag = 0;
@@ -41,7 +44,6 @@ namespace Exercose02_B
                 if (char.IsNumber(x) || x == '-')
                 {
                     tempString += x;
-
                 }
                 else flag++;
 
@@ -55,7 +57,10 @@ namespace Exercose02_B
 
             }
 
-            newTerm.Exponent = Convert.ToInt32(tempString);
+            if (tempString == null) tempString = "1";
+            if(flag==0) newTerm.Coef = Convert.ToInt32(tempString);
+            else
+                newTerm.Exponent = Convert.ToInt32(tempString);
             yield return newTerm;
         }
 
@@ -147,6 +152,38 @@ namespace Exercose02_B
             return ResultantPolynomial;
         }
 
+        public Polynomial MultiPolynomial(Polynomial polynomial)
+        {
+            var ThisPolynomial = this.PolyLinkedList.Head;
+            var ThatPolynomial = polynomial.PolyLinkedList.Head;
+            Polynomial ProductPolynomial= new Polynomial();;
+
+            while (ThisPolynomial.Data != null)
+            {
+                while (ThatPolynomial.Data != null)
+                {
+                    Term ProductTerm = Multiply(ThisPolynomial.Data, ThatPolynomial.Data);
+                    ProductPolynomial.PolyLinkedList.AddToTail(ProductTerm);
+                    ThatPolynomial = ThatPolynomial.Next;
+                }
+
+                ThisPolynomial = ThisPolynomial.Next;
+                ThatPolynomial = polynomial.PolyLinkedList.Head;
+            }
+            ProductPolynomial.OrderDecreasing();
+            ProductPolynomial.CombineTerms();
+
+            return ProductPolynomial;
+        }
+
+        public Term Multiply(Term thisTerm, Term thatTerm)
+        {
+            int Coef = thisTerm.Coef * thatTerm.Coef;
+            int Exponent = thisTerm.Exponent + thatTerm.Exponent;
+            Term ProductTerm = new Term(Coef, Exponent);
+            return ProductTerm;
+        }
+
         public void OrderDecreasing()
         {
             var temp = PolyLinkedList.Head;
@@ -167,21 +204,21 @@ namespace Exercose02_B
         public void CombineTerms()
         {
             var temp = PolyLinkedList.Head;
-            while (temp.Next.Data != null)
+            while (temp.Data != null)
             {
+                if (temp.Next.Data == null) break;
                 if (temp.Data.Exponent == temp.Next.Data.Exponent)
                 {
                     int SumCoef = temp.Data.Coef + temp.Next.Data.Coef;
                     Term newTerm = new Term(SumCoef,temp.Data.Exponent);
-                    PolyLinkedList.AddToHead(newTerm);
-                    PolyLinkedList.Remove(temp.Prev,temp.Next);
-                    PolyLinkedList.Remove(temp, temp.Next.Next);
-                  
+                    temp.Data = newTerm;
+                    PolyLinkedList.Remove(temp,temp.Next.Next);
                 }
                 temp = temp.Next;
             }
             this.OrderDecreasing();
         }
+
         public bool Swap<T>(Node<T> node)
         {
             T Data = node.Data;

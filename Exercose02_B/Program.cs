@@ -7,7 +7,7 @@ namespace Exercose02_B
         static void Main(string[] args)
         {
             View view= new View();
-            view.Test2();
+            view.Test3();
             Console.ReadLine(); 
         }
     }
